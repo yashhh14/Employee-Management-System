@@ -4,11 +4,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Card = ({data}) => {
+const Card = ({data,refresh}) => {
     async function deleteEmp(e){
         const id = e.target.name
         try {
             await axios.delete(`http://localhost:8080/api/employee/${id}`);
+            refresh()
         } catch (err) {
             console.log(err);
         }

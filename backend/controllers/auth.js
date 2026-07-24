@@ -6,8 +6,39 @@ auth.get('/api/employees', async (req, res) => {
     const dbRes = await Emp.find()
     res.json(dbRes)
 })
+auth.get('/api/employee/:id', async(req, res)=>{
+    let id = req.params.id
+    try{
+        const empData = await Emp.findById({ _id: id });
+        res.status(201).json({
+            data : empData
+        })
+    }catch(err){
+        console.log(err.message);
+        res.status(409).json({
+            err : err.message
+        })
+    }
+})
+auth.get('/api/filters/:id', async(req, res)=>{
+    let id = req.params.id
+    try{
+        if(id=="All"){
+            const empData = await Emp.find();
+            res.status(201).json(empData)
+        }
+        else{
+            const empData = await Emp.find({ department:id });
+            res.status(201).json(empData)
+        }
+    }catch(err){
+        console.log(err.message);
+        res.status(409).json({
+            err : err.message
+        })
+    }
+})
 auth.post('/api/add', async (req, res) => {
-    console.log(req.body);
     try {
         await Emp.create(req.body)
         res.status(201).json({
@@ -21,21 +52,6 @@ auth.post('/api/add', async (req, res) => {
     }
 })
 
-auth.get('/api/employee/:id', async(req, res)=>{
-    let id = req.params.id
-    try{
-        const empData = await Emp.findById({ _id:id})
-        console.log(empData);
-        res.status(201).json({
-            data : empData
-        })
-    }catch(err){
-        console.log(err.message);
-        res.status(409).json({
-            err : err.message
-        })
-    }
-})
 
 auth.put('/api/edit/:id', async(req, res) => {
     let id = req.params.id

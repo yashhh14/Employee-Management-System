@@ -1,115 +1,134 @@
-import React from 'react'
-import axios from 'axios'
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Form = (props) => {
-    const id = props.data 
-    
-    let [employee, setEmployee] = useState({})
+    const id = props.data;
+    const navigate = useNavigate();
+
+    const emptyEmployee = {
+        name: "",
+        designation: "",
+        department: "",
+        email: "",
+        phone: "",
+        salary: "",
+        address: "",
+        joiningDate: ""
+    };
+
+    const [employee, setEmployee] = useState(emptyEmployee);
+
+    const [details, setDetails] = useState(emptyEmployee);
 
     async function getData() {
         try {
             const apiRes = await axios.get(`http://localhost:8080/api/employee/${id}`);
-            setEmployee(apiRes.data.data)
+            setEmployee(apiRes.data.data);
         } catch (err) {
             console.log(err);
         }
     }
-    useEffect(() => {
-        getData();
-    }, []);
 
-    if(id=="yash"){
-        employee = {
-        name: "",
-        designation: "",
-        department: "",
-        email: "",
-        phone: "",
-        salary: ""
+    useEffect(() => {
+        if (id !== "yash") {
+            getData();
+        }
+    }, [id]);
+
+    function handleInput(e) {
+        const { name, value } = e.target;
+        if (id === "yash") {
+            setDetails({...details,[name]: value});
+        } else {
+            setEmployee({...employee,[name]: value
+            });
         }
     }
 
-    let [details, setDetails] = useState({
-        name: "",
-        designation: "",
-        department: "",
-        email: "",
-        phone: "",
-        salary: ""
-    })
     async function postData() {
         try {
-            if(id=="yash"){
-                const apiRes = await axios.post('http://localhost:8080/api/add',details)
-
-            }else{
-                const apiRes = await axios.put(`http://localhost:8080/api/edit/${id}`, employee)
+            if (id === "yash") {
+                await axios.post("http://localhost:8080/api/add",details);
+            } else {
+                await axios.put(`http://localhost:8080/api/edit/${id}`,employee);
             }
+            navigate("/");
         } catch (err) {
             console.log(err);
         }
     }
-    function handleInput(e) {
-        if(id == "yash"){
-            setDetails({ ...details, [e.target.name]: e.target.value })
-        }else{
-            setEmployee({ ...employee, [e.target.name]: e.target.value })
-        }
-    }
+
     return (
         <div className="container mt-5">
             <div className="card shadow p-4 mx-auto" style={{ maxWidth: "700px" }}>
-                <h2 className="text-center mb-4">{id=="yash"?"Add":"Edit"} Employee</h2>
+                <h2 className="text-center mb-4">
+                    {id === "yash" ? "Add" : "Edit"} Employee
+                </h2>
                 <form>
                     <div className="mb-3">
-                        <label className="form-label">Full Name</label>
-                        <input type="text" name='name' className="form-control" value={ id=="yash"? details.name: employee.name }  placeholder="Enter employee name" onChange={(e)=> handleInput(e)} />
+                        <label className="form-label">
+                            Full Name
+                        </label>
+                        <input type="text" name="name" className="form-control" placeholder="Enter employee name" value={ id === "yash" ? details.name : employee.name || ""} onChange={handleInput}/>
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Email</label>
-                        <input type="email" name='email' className="form-control" value={ id=="yash"? details.email: employee.email} placeholder="Enter email" onChange={(e)=> handleInput(e)} />
+                        <label className="form-label">
+                            Email
+                        </label>
+                        <input type="email" name="email" className="form-control" placeholder="Enter email" value={ id === "yash" ? details.email : employee.email || "" } onChange={handleInput} />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Phone Number</label>
-                        <input type="tel" name='phone' className="form-control" value={ id=="yash"? details.phone:employee.phone} placeholder="Enter phone number" onChange={(e)=> handleInput(e)} />
+                        <label className="form-label">
+                            Phone Number
+                        </label>
+                        <input type="tel" name="phone" className="form-control" placeholder="Enter phone number" value={ id === "yash" ? details.phone : employee.phone || "" } onChange={handleInput} />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Department</label>
-                        <select name="department" className="form-select" value={id=="yash"? details.department:employee.department} onChange={(e)=> handleInput(e)}>
-                            <option >Select Department</option>
-                            <option>IT</option>
-                            <option>HR</option>
-                            <option>Finance</option>
-                            <option>Marketing</option>
-                            <option>Sales</option>
+                        <label className="form-label">
+                            Department
+                        </label>
+                        <select name="department" className="form-select" value={ id === "yash" ? details.department : employee.department || "" } onChange={handleInput} >
+                            <option value="">
+                                Select Department
+                            </option>
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sales">Sales</option>
                         </select>
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Designation</label>
-                        <input name='designation' type="text" className="form-control" value={id=="yash"? details.designation:employee.designation} placeholder="Enter designation" onChange={(e) => handleInput(e)} />
+                        <label className="form-label">
+                            Designation
+                        </label>
+                        <input type="text" name="designation" className="form-control" placeholder="Enter designation" value={ id === "yash" ? details.designation : employee.designation || "" } onChange={handleInput} />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Salary</label>
-                        <input name='salary' type="number" className="form-control" value={id=="yash"? details.salary:employee.salary} placeholder="Enter salary" onChange={(e) => handleInput(e)} />
+                        <label className="form-label">
+                            Salary
+                        </label>
+                        <input type="number" name="salary" className="form-control" placeholder="Enter salary" value={ id === "yash" ? details.salary : employee.salary || "" } onChange={handleInput} />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Address</label>
-                        <textarea name='address' className="form-control" rows="3" value={id=="yash"? details.address:employee.address} placeholder="Enter address" onChange={(e) => handleInput(e)} ></textarea>
+                        <label className="form-label">
+                            Address
+                        </label>
+                        <textarea name="address" rows="3" className="form-control" placeholder="Enter address" value={ id === "yash" ? details.address : employee.address || "" } onChange={handleInput} />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Joining Date</label>
-                        <input name='joiningDate' type="date" value={id=="yash"? details.joiningDate:employee.joiningDate} className="form-control" onChange={(e) => handleInput(e)} />
+                        <label className="form-label">
+                            Joining Date
+                        </label>
+                        <input type="date" name="joiningDate" className="form-control" value={ id === "yash" ? details.joiningDate : employee.joiningDate || "" } onChange={handleInput} />
                     </div>
-                    <NavLink className="btn btn-primary w-100" onClick={postData} type="submit" to='/'>
-                        {id=="yash"?"Add Employee":"Save"} 
-                    </NavLink>
+                    <button type="button" className="btn btn-primary w-100" onClick={postData} > {id === "yash" ? "Add Employee" : "Save Changes"}
+                    </button>
                 </form>
             </div>
         </div>
     );
-}
+};
 
-export default Form
+export default Form;
