@@ -8,7 +8,7 @@ const Card = ({data}) => {
     async function deleteEmp(e){
         const id = e.target.name
         try {
-            await axios.delete(`http://localhost:8080/api/employee/${id}`);
+            await axios.delete(`https://employee-management-system-cfk8.onrender.com/api/employee/${id}`);
         } catch (err) {
             console.log(err);
         }

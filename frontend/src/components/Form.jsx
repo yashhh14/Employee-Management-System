@@ -43,10 +43,10 @@ const Form = (props) => {
     async function postData() {
         try {
             if(id=="yash"){
-                const apiRes = await axios.post('http://localhost:8080/api/add',details)
+                const apiRes = await axios.post('https://employee-management-system-cfk8.onrender.com/api/add',details)
 
             }else{
-                const apiRes = await axios.put(`http://localhost:8080/api/edit/${id}`, employee)
+                const apiRes = await axios.put(`https://employee-management-system-cfk8.onrender.com/api/edit/${id}`, employee)
             }
         } catch (err) {
             console.log(err);

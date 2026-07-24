@@ -10,7 +10,7 @@ const Home = () => {
 
     async function getData() {
         try {
-            const apiRes = await axios.get('http://localhost:8080/api/employees');
+            const apiRes = await axios.get("https://employee-management-system-cfk8.onrender.com/api/employees");
             setData(apiRes.data);
         } catch (err) {
             console.log(err);
