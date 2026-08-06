@@ -7,7 +7,7 @@ app.use(express.json())
 const {setServers} = require("node:dns/promises")
 setServers(["1.1.1.1", "8.8.8.8"]);
 app.use(cors({
-    origin: "https://emsbackend.netlify.app",
+    origin: "https://emsbackendapp.netlify.app",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true
 }));

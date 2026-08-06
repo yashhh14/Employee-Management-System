@@ -23,7 +23,7 @@ const Form = (props) => {
 
     async function getData() {
         try {
-            const apiRes = await axios.get(`http://localhost:8080/api/employee/${id}`);
+            const apiRes = await axios.get(`https://employee-management-system-x9fx.onrender.com/api/employee/${id}`);
             setEmployee(apiRes.data.data);
         } catch (err) {
             console.log(err);
@@ -49,9 +49,9 @@ const Form = (props) => {
     async function postData() {
         try {
             if (id === "yash") {
-                await axios.post("http://localhost:8080/api/add",details);
+                await axios.post("https://employee-management-system-x9fx.onrender.com/api/add",details);
             } else {
-                await axios.put(`http://localhost:8080/api/edit/${id}`,employee);
+                await axios.put(`https://employee-management-system-x9fx.onrender.com/api/edit/${id}`,employee);
             }
             navigate("/");
         } catch (err) {

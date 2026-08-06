@@ -10,7 +10,7 @@ const Home = () => {
 
     async function getData() {
         try {
-            const apiRes = await axios.get("http://localhost:8080/api/employees");
+            const apiRes = await axios.get("https://employee-management-system-x9fx.onrender.com/api/employees");
             setData(apiRes.data);
         } catch (err) {
             console.log(err);
@@ -20,7 +20,7 @@ const Home = () => {
     async function handleInput(e) {
         let id = e.target.value
         try {
-            const apiRes = await axios.get(`http://localhost:8080/api/filters/${id}`);
+            const apiRes = await axios.get(`https://employee-management-system-x9fx.onrender.com/api/filters/${id}`);
             setData(apiRes.data);
         } catch (err) {
             console.log(err);
