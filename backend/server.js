@@ -2,7 +2,10 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const PORT = 8080
+require('dotenv').config(); 
 app.use(express.json())
+const {setServers} = require("node:dns/promises")
+setServers(["1.1.1.1", "8.8.8.8"]);
 app.use(cors({
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
